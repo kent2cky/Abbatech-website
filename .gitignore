@@ -1,0 +1,22 @@
+# Frontend directories and files
+.DS_Store
+node_modules/
+/dist/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+/test/unit/coverage/
+
+# Backend directories and files
+Backend/bin/
+Backend/obj/
+*.pdb
+**.pdb
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
