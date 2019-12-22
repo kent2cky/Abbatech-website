@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import HelloWorld from '@/components/HelloWorld';
 import Homepage from '@/components/Homepage';
+import Catalogue from '@/components/StocksCatalogue';
+import AboutUs from '@/components/AboutUs';
 
 Vue.use(Router);
 
@@ -13,9 +14,14 @@ export default new Router({
       component: Homepage,
     },
     {
-      path: '/helloworld',
-      name: 'Helloworld',
-      component: HelloWorld,
+      path: '/catalogue',
+      name: 'Catalogue',
+      component: Catalogue,
+    },
+    {
+      path: '/about-us',
+      name: 'About',
+      component: AboutUs,
     },
   ],
 });
