@@ -12,6 +12,7 @@ Backend/bin/
 Backend/obj/
 *.pdb
 **.pdb
+Backend/Migrations/
 
 # Editor directories and files
 .idea

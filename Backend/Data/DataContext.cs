@@ -9,11 +9,8 @@ namespace Abbatech.Data
 {
     public class DataContext : DbContext
     {
-        public DataContext(DbContextOptions<DataContext> options)
-            : base(options)
-        {
-        }
-
+        protected override void OnConfiguring(DbContextOptionsBuilder options)
+            => options.UseSqlite("Data Source=abbatech.db");
         public DbSet<Stock> Stocks { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<User> Users { get; set; }
@@ -21,10 +18,25 @@ namespace Abbatech.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Stock>().ToTable("Stock");
-            modelBuilder.Entity<Category>().ToTable("Category");
-            modelBuilder.Entity<User>().ToTable("User");
-            modelBuilder.Entity<Order>().ToTable("Order");
+            modelBuilder.Entity<Stock>()
+            .ToTable("Stock")
+            .Property(p => p.Id)
+            .IsRequired()
+            .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<Stock>().Ignore(p => p.EntityState);
+
+
+            modelBuilder.Entity<Category>()
+            .ToTable("Category")
+            .Property(p => p.Id)
+            .IsRequired()
+            .ValueGeneratedNever();
+
+            modelBuilder.Entity<Category>().Ignore(p => p.EntityState);
+
+            modelBuilder.Entity<User>().ToTable("User").Ignore(p => p.EntityState);
+            modelBuilder.Entity<Order>().ToTable("Order").Ignore(p => p.EntityState);
         }
     }
 }

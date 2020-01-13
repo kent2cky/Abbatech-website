@@ -1,11 +1,14 @@
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Abbatech.Data;
 
 namespace Abbatech.Models
 {
-    public class Category
+    public class Category : IEntity
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public int CategoryID { get; set; }
-        public string CategoryName { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public EntityState EntityState { get; set; }
     }
 }
