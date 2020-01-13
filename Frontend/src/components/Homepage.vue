@@ -1,10 +1,9 @@
 <template>
-  <div class="hello">
+  <div id="homepage">
     <h1>{{ msg }}</h1>
-
     <p>
-      We have all kinds of phones, laptops, and accessories. Contact us today to
-      buy from the largest tech retailer East of the Niger.
+      We have all kinds of phones, computers, and accessories. Contact us today
+      to buy from the largest tech retailer east of the Niger.
     </p>
     <p>
       We sell at very affordable rates. We also offer great deals you will never
@@ -28,6 +27,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+#homepage {
+  padding: 50px;
+}
+
 h1,
 h2 {
   font-weight: normal;

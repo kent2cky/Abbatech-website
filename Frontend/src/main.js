@@ -1,5 +1,8 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
+import 'bootstrap/dist/css/bootstrap.css';
+import 'jquery/dist/jquery';
+import 'bootstrap/dist/js/bootstrap';
 import Vue from 'vue';
 import App from './App';
 import router from './router';
@@ -13,7 +16,3 @@ new Vue({
   components: { App },
   template: '<App/>',
 });
-
-setTimeout(() => {
-  console.log('You just ran out time!');
-}, 3000);
