@@ -11,6 +11,6 @@ namespace Abbatech.Data
         Task<int> Update(string caller, params T[] items); // caller parameter add for debugging purposes
         Task<int> Delete(params T[] items); // return 0 if successfull otherwise 1
 
-        Task<T> GetByID(Expression<Func<T, bool>> where, params Expression<Func<T, object>>[] navigationProperties);
+        Task<ICollection<T>> GetByID(Expression<Func<T, bool>> where, params Expression<Func<T, object>>[] navigationProperties);
     }
 }

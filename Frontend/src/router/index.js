@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Homepage from '@/components/Homepage';
-import Catalogue from '@/components/StocksCatalogue';
+import Catalogue from '@/components/Catalogue';
 import AboutUs from '@/components/AboutUs';
 
 Vue.use(Router);
@@ -15,6 +15,11 @@ export default new Router({
     },
     {
       path: '/catalogue',
+      name: 'Catalogue',
+      component: Catalogue,
+    },
+    {
+      path: '/catalogue/:category',
       name: 'Catalogue',
       component: Catalogue,
     },

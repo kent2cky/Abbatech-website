@@ -38,20 +38,21 @@ namespace Abbatech.Data
             }
         }
 
-        public virtual async Task<T> GetByID(Expression<Func<T, bool>> where, params Expression<Func<T, Object>>[] navigationProperties)
+        public virtual async Task<ICollection<T>> GetByID(Expression<Func<T, bool>> where, params Expression<Func<T, Object>>[] navigationProperties)
         {
             try
             {
-                T item = null;
+                // T item = null;
                 IQueryable<T> dbQuery = _context.Set<T>();
 
                 //Apply eager loading
                 foreach (Expression<Func<T, object>> navigationProperty in navigationProperties)
                     dbQuery = dbQuery.Include<T, object>(navigationProperty);
 
-                return item = await dbQuery
+                return await dbQuery
                     .AsNoTracking() //Don't track any changes for the selected item
-                    .FirstOrDefaultAsync<T>(where, default); //Apply where clause
+                    .Where(where)
+                    .ToListAsync(default); //Apply where clause
             }
             catch (Exception ex)
             {
@@ -70,7 +71,6 @@ namespace Abbatech.Data
                     dbSet.Add(item);
                     foreach (var entry in _context.ChangeTracker.Entries<IEntity>())
                     {
-                        Console.WriteLine(entry.Metadata);
                         IEntity entity = entry.Entity;
                         entry.State = GetEntityState(entity.EntityState);
                     }

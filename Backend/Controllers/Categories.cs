@@ -40,7 +40,7 @@ namespace Abbatech.Controllers
             return Ok(Category);
         }
 
-        [HttpDelete]
+        [HttpDelete("delete")]
         public IActionResult Delete(Category[] Category)
         {
             Console.WriteLine("From delete...");

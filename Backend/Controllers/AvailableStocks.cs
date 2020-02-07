@@ -27,58 +27,90 @@ namespace Abbatech.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            return Ok(_repo.GetAll(c => c.Category));
+            _logger.LogInformation("Retrieving all Stocks.......................");
+            try
+            {
+                var allStocks = await _repo.GetAll(c => c.Category);
+                _logger.LogInformation("Successfully retrieved Stocks.......................");
+                _logger.LogInformation("Returning Stocks.......................");
+                return Ok(allStocks);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{DateTime.Now}   From AvailableStocksController.GetAll() {ex}");
+                return BadRequest();
+            }
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetByID(int ID)
+        public async Task<IActionResult> GetByID(int ID)
         {
-            var stock = _repo.GetByID(e => e.Name == "Carson", f => f.Category);
-
+            _logger.LogInformation($"executing getbyid with argument {ID}......");
+            var stock = await _repo.GetByID(e => e.Id == ID, f => f.Category);
+            _logger.LogInformation($"returning {stock}.......");
             return Ok(stock);
         }
 
-        [HttpDelete]
-        public IActionResult Delete(Stock stock)
+        [HttpDelete("delete")]
+        public async Task<IActionResult> Delete(params Stock[] stocks)
         {
-            Console.WriteLine("From delete...");
-            var res = _repo.Delete(stock);
-            var result = new
+            _logger.LogInformation("Deleting stock(s)..........");
+            var resultList = new List<object>();
+            foreach (var stock in stocks)
             {
-                id = stock.Id,
-                deleted = res,
-            };
-            return Ok(result);
+                var res = await _repo.Delete(stock);
+                var ano = new
+                {
+                    result = res,
+                    id = stock.Id,
+                    name = stock.Name
+                };
+                resultList.Add(ano);
+
+            }
+            _logger.LogInformation("Deleted stock(s)..........");
+            return Ok(resultList);
         }
 
         [HttpPut]
-        public IActionResult Update(params Stock[] Stocks)
+        public async Task<IActionResult> Update(params Stock[] Stocks)
         {
+            _logger.LogInformation("Updating stock(s)..........");
             var StocksToUpdate = Stocks;
             foreach (var stock in StocksToUpdate)
             {
                 stock.EntityState = Abbatech.Data.EntityState.Modified;
             }
 
-            Console.WriteLine("From delete...");
-            var res = _repo.Update("AvailableStocksController.Update", StocksToUpdate);
+            var res = await _repo.Update("AvailableStocksController.Update", StocksToUpdate);
+            _logger.LogInformation("Updated stock(s)..........");
             return Ok(res);
         }
 
         [HttpPost]
-        public IActionResult AddStocks(params Stock[] Stocks)
+        public async Task<IActionResult> AddStocks(params Stock[] Stocks)
         {
+            _logger.LogInformation("Adding stock(s)..........");
             var StocksToAdd = Stocks;
             foreach (var stock in StocksToAdd)
             {
                 stock.EntityState = Abbatech.Data.EntityState.Added;
             }
 
-            Console.WriteLine("From delete...");
-            var res = _repo.Update("AvailableStocksController.AddStocks", StocksToAdd);
+            var res = await _repo.Update("AvailableStocksController.AddStocks", StocksToAdd);
+            _logger.LogInformation($"Added {StocksToAdd.Length} stock(s)..........");
             return Ok(res);
+        }
+
+        [HttpGet("{category}/{categoryId}")]
+        public async Task<IActionResult> GetByCategory(string category, int categoryId)
+        {
+            _logger.LogInformation($"Getting stocks of category {categoryId}..........");
+            var stocks = await _repo.GetByID(e => e.CategoryId == categoryId, f => f.Category);
+            _logger.LogInformation($"{stocks.Count}.......");
+            return Ok(stocks);
         }
 
     }

@@ -3,6 +3,7 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import 'jquery/dist/jquery';
 import 'bootstrap/dist/js/bootstrap';
+import 'es6-promise/auto';
 import Vue from 'vue';
 import App from './App';
 import router from './router';

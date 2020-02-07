@@ -3,12 +3,12 @@
     <div id="sidebar-wrapper">
       <ul class="sidebar-nav">
         <li
-          v-for="(category, index) in categories"
+          v-for="(category, index) of categories"
           v-bind:key="category.id"
           :class="{ active: category.isActive }"
           @click="
             {
-              activate(category, index);
+              makeActive({ category, index });
             }
           "
         >
@@ -16,45 +16,66 @@
         </li>
       </ul>
     </div>
-
-    <div id="page-content-wrapper">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-lg-12">
-            <h1 class="text-center">Bootstrap Sidebar</h1>
-            <h2 class="small text-center">Second Header</h2>
-            <p class="text-center">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              Accusantium perferendis maiores velit ad id delectus nisi eligendi
-              doloremque officia necessitatibus, repellendus alias omnis, natus
-              nam voluptates dolor vel minus ab?
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
 <script>
+import bus from '@/components/bus';
+
 export default {
   name: 'SideBar',
   data() {
     return {
-      categories: [
-        { id: 1, name: 'Phones', isActive: true },
-        { id: 2, name: 'Laptops', isActive: false },
-        { id: 3, name: 'Accessories', isActive: false },
-      ],
+      categories: [],
     };
   },
   methods: {
-    activate(category, index) {
-      this.categories.map(cat => (cat.isActive = false));
-      const currentCategory = category;
-      currentCategory.isActive = true;
-      this.$set(this.categories, index, currentCategory);
+    makeActive(eventArgs) {
+      const prevActiveCat = this.getPrevActive(); // get previously active category
+      if (eventArgs) {
+        if (prevActiveCat != null) {
+          const restoredPrevActiveCat = prevActiveCat;
+          restoredPrevActiveCat.category.isActive = false;
+          console.log('here');
+          this.$set(
+            this.categories,
+            restoredPrevActiveCat.category.id,
+            restoredPrevActiveCat.category,
+          ); // restore the previously active to not active
+        }
+        this.setActive(eventArgs);
+      } else {
+        this.setActive(prevActiveCat);
+      }
     },
+    setActive(params) {
+      const { category, index } = params;
+      localStorage.setItem('_activeCat', JSON.stringify(params)); // save current active category
+      category.isActive = true;
+      this.$set(this.categories, index, category);
+
+      if (index === 0) this.$store.dispatch('fetchAllStocks');
+      else this.$store.dispatch('fetchStocksByCategory', index);
+    },
+    getPrevActive() {
+      let prevActiveCat = JSON.parse(localStorage.getItem('_activeCat'));
+      if (prevActiveCat) {
+        return prevActiveCat;
+      }
+      prevActiveCat = {
+        category: this.categories[0],
+        index: 0, // set default activeCategory
+      };
+      return prevActiveCat;
+    },
+  },
+
+  beforeMount() {
+    bus.$on('doneFetching', data => {
+      this.makeActive(data);
+    }); // register event to be emitted from other components
+    this.categories = this.$store.getters.getCategories;
+    if (this.categories.length !== 0) this.makeActive();
   },
 };
 </script>
@@ -63,7 +84,7 @@ export default {
 #sidebar-wrapper {
   z-index: 1;
   position: fixed;
-  width: 20vw;
+  width: 17vw;
   height: 100%;
   overflow-y: hidden;
   background: #f15d30;

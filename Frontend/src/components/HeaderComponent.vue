@@ -40,16 +40,17 @@
               <ul>
                 <li
                   class="dropdown-item"
-                  v-for="category in categories"
+                  v-for="(category, index) in categories"
                   v-bind:key="category.id"
+                  v-on:click="
+                    {
+                      routeToCat({ category, index });
+                    }
+                  "
                 >
                   {{ category.name }}
                 </li>
               </ul>
-              <!-- <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">Something else here</a> -->
             </div>
           </li>
           <li class="nav-item">
@@ -69,24 +70,40 @@
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
             Search
           </button>
+          &nbsp; &nbsp; &nbsp; &nbsp;
+          <button class="btn btn-primary my-2 my-sm-0" type="submit">
+            Sign in
+          </button>
+          &nbsp; &nbsp;
         </form>
       </div>
     </nav>
   </header>
 </template>
 <script>
+import bus from '@/components/bus';
+
 export default {
   name: 'HeaderComponent',
   data() {
     return {
       activeClass: 'active',
       hover: false,
-      categories: [
-        { id: 1, name: 'Phones' },
-        { id: 2, name: 'Laptops' },
-        { id: 3, name: 'Accessories' },
-      ],
+      categories: this.$store.getters.getCategories,
     };
+  },
+  methods: {
+    routeToCat(params) {
+      if (this.$route !== 'Catalogue') {
+        this.$router.push('Catalogue');
+        bus.$emit('doneFetching', params);
+      } else {
+        bus.$emit('doneFetching', params);
+      }
+    },
+  },
+  beforeMount() {
+    this.$store.dispatch('fetchCategories');
   },
 };
 </script>
