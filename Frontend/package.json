@@ -1,29 +1,37 @@
 {
   "name": "abbatech",
   "version": "1.0.0",
+  "private": true,
   "description": "A web catalogue for Abbah Tech",
   "author": "kent2ckymaduka@gmail.com <kent2ckymaduka@gmail.com>",
-  "private": true,
   "scripts": {
+    "build": "node build/build.js",
+    "lint": "eslint --ext .js,.vue src test/unit",
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
-    "unit": "jest --config test/unit/jest.conf.js --coverage",
     "test": "npm run unit",
-    "lint": "eslint --ext .js,.vue src test/unit",
-    "build": "node build/build.js"
+    "unit": "jest --config test/unit/jest.conf.js --coverage"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.27",
+    "@fortawesome/free-brands-svg-icons": "^5.12.1",
+    "@fortawesome/free-regular-svg-icons": "^5.12.1",
+    "@fortawesome/free-solid-svg-icons": "^5.12.1",
+    "@fortawesome/vue-fontawesome": "^0.1.9",
     "axios": "^0.19.1",
     "bootstrap": "^4.4.1",
+    "bootstrap-vue": "^2.4.0",
     "cloudinary-vue": "^1.0.0",
     "es6-promise": "^4.2.8",
     "jquery": "^3.4.1",
     "popper.js": "^1.16.0",
+    "register-service-worker": "^1.6.2",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
     "vuex": "^3.1.2"
   },
   "devDependencies": {
+    "@vue/cli-plugin-pwa": "^4.2.2",
     "autoprefixer": "^7.1.2",
     "babel-core": "^6.22.1",
     "babel-eslint": "^8.2.1",
@@ -74,13 +82,13 @@
     "webpack-dev-server": "^2.9.1",
     "webpack-merge": "^4.1.0"
   },
-  "engines": {
-    "node": ">= 6.0.0",
-    "npm": ">= 3.0.0"
-  },
   "browserslist": [
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "engines": {
+    "node": ">= 6.0.0",
+    "npm": ">= 3.0.0"
+  }
 }

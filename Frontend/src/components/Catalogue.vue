@@ -15,14 +15,7 @@
         ></product-card>
       </div>
     </div>
-    <button
-      type="button"
-      class=" addImage"
-      data-toggle="modal"
-      data-target="#exampleModal"
-      data-whatever="@mdo"
-    ></button>
-    <!-- <button class="addImage" @click="upload()"></button> -->
+    <button class="addStock" @click="showModal"></button>
     <upload-dialogue></upload-dialogue>
   </div>
 </template>
@@ -32,6 +25,7 @@ import SideBar from '@/components/Sidebar';
 import ProductCard from '@/components/Card';
 import UploadDialogue from '@/components/Upload';
 import bus from '@/components/bus';
+import { BButton } from 'bootstrap-vue';
 
 export default {
   name: 'ProductsCatalogue',
@@ -40,22 +34,28 @@ export default {
       stocks: {},
     };
   },
+  methods: {
+    showModal() {
+      bus.$emit('showModal');
+    },
+  },
   components: {
     SideBar,
     ProductCard,
     UploadDialogue,
+    BButton,
   },
   mounted() {
     this.stocks = this.$store.state.stocks;
-    bus.$on('hideDialogue', data => {
-      this.upload();
-    });
+    // bus.$on('hideDialogue', data => {
+    //   this.upload();
+    // });
   },
 };
 </script>
 
 <style>
-.addImage {
+.addStock {
   position: fixed;
   z-index: 599;
   background: url('../assets/vector-plus-orange-4-original.png') no-repeat
@@ -68,11 +68,11 @@ export default {
 }
 
 *:focus,
-.addImage:focus {
+.addStock:focus {
   outline: none;
   border: 1px solid grey;
 }
-.addImage:active {
+.addStock:active {
   transform: scale(0.9);
 }
 </style>

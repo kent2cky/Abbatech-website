@@ -38,6 +38,8 @@ namespace Abbatech
                 builder =>
                 {
                     builder.WithOrigins("http://localhost:8080");
+                    builder.AllowAnyMethod();
+                    builder.AllowAnyHeader();
                 });
             });
 

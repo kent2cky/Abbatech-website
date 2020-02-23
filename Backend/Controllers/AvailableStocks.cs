@@ -29,17 +29,17 @@ namespace Abbatech.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            _logger.LogInformation("Retrieving all Stocks.......................");
+            _logger.LogInformation("Retrieving all Stocks.......................\n\n");
             try
             {
                 var allStocks = await _repo.GetAll(c => c.Category);
-                _logger.LogInformation("Successfully retrieved Stocks.......................");
-                _logger.LogInformation("Returning Stocks.......................");
+                _logger.LogInformation("Successfully retrieved Stocks.......................\n\n");
+                _logger.LogInformation("Returning Stocks.......................\n\n");
                 return Ok(allStocks);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{DateTime.Now}   From AvailableStocksController.GetAll() {ex}");
+                _logger.LogError($"{DateTime.Now}   From AvailableStocksController.GetAll() {ex}\n\n");
                 return BadRequest();
             }
         }
@@ -47,7 +47,7 @@ namespace Abbatech.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetByID(int ID)
         {
-            _logger.LogInformation($"executing getbyid with argument {ID}......");
+            _logger.LogInformation($"executing getbyid with argument {ID}......\n\n");
             var stock = await _repo.GetByID(e => e.Id == ID, f => f.Category);
             _logger.LogInformation($"returning {stock}.......");
             return Ok(stock);
@@ -56,7 +56,7 @@ namespace Abbatech.Controllers
         [HttpDelete("delete")]
         public async Task<IActionResult> Delete(params Stock[] stocks)
         {
-            _logger.LogInformation("Deleting stock(s)..........");
+            _logger.LogInformation("Deleting stock(s)..........\n\n");
             var resultList = new List<object>();
             foreach (var stock in stocks)
             {
@@ -70,14 +70,14 @@ namespace Abbatech.Controllers
                 resultList.Add(ano);
 
             }
-            _logger.LogInformation("Deleted stock(s)..........");
+            _logger.LogInformation("Deleted stock(s)..........\n\n");
             return Ok(resultList);
         }
 
         [HttpPut]
         public async Task<IActionResult> Update(params Stock[] Stocks)
         {
-            _logger.LogInformation("Updating stock(s)..........");
+            _logger.LogInformation("Updating stock(s)..........\n\n");
             var StocksToUpdate = Stocks;
             foreach (var stock in StocksToUpdate)
             {
@@ -85,14 +85,14 @@ namespace Abbatech.Controllers
             }
 
             var res = await _repo.Update("AvailableStocksController.Update", StocksToUpdate);
-            _logger.LogInformation("Updated stock(s)..........");
+            _logger.LogInformation("Updated stock(s)..........\n\n");
             return Ok(res);
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddStocks(params Stock[] Stocks)
+        public async Task<IActionResult> AddStocks([FromBody]params Stock[] Stocks)
         {
-            _logger.LogInformation("Adding stock(s)..........");
+            _logger.LogInformation("Adding stock(s)..........\n\n");
             var StocksToAdd = Stocks;
             foreach (var stock in StocksToAdd)
             {
@@ -100,16 +100,16 @@ namespace Abbatech.Controllers
             }
 
             var res = await _repo.Update("AvailableStocksController.AddStocks", StocksToAdd);
-            _logger.LogInformation($"Added {StocksToAdd.Length} stock(s)..........");
+            _logger.LogInformation($"Added {StocksToAdd.Length} stock(s)..........\n\n");
             return Ok(res);
         }
 
         [HttpGet("{category}/{categoryId}")]
         public async Task<IActionResult> GetByCategory(string category, int categoryId)
         {
-            _logger.LogInformation($"Getting stocks of category {categoryId}..........");
+            _logger.LogInformation($"Getting stocks of category {categoryId}..........\n\n");
             var stocks = await _repo.GetByID(e => e.CategoryId == categoryId, f => f.Category);
-            _logger.LogInformation($"{stocks.Count}.......");
+            _logger.LogInformation($"{stocks.Count}.......\n\n");
             return Ok(stocks);
         }
 

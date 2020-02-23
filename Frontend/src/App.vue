@@ -16,6 +16,8 @@ import HeaderComponent from '@/components/HeaderComponent';
 import ProductsCatalogue from '@/components/Catalogue';
 import ProductCard from '@/components/Card';
 import bus from '@/components/bus';
+import { BModal } from 'bootstrap-vue';
+import { BButton } from 'bootstrap-vue';
 
 Vue.use(Vuex);
 
@@ -92,6 +94,41 @@ export default {
     HeaderComponent,
     ProductsCatalogue,
     ProductCard,
+  },
+  methods: {
+    showMsgBox(params) {
+      console.log('showMsgBox clicked', params);
+      const {
+        msg,
+        title = 'Confirmation',
+        size = 'md',
+        buttonSize = 'md',
+        okVariant = 'success',
+      } = params;
+
+      this.boxTwo = '';
+      this.$bvModal
+        .msgBoxOk(msg, {
+          title: title,
+          size: size,
+          buttonSize: buttonSize,
+          okVariant: okVariant,
+          headerClass: 'p-2 border-bottom-0',
+          footerClass: 'p-2 border-top-0',
+        })
+        .then(value => {
+          this.boxTwo = value;
+        })
+        .catch(err => {
+          // An error occurred!
+        });
+    },
+  },
+  mounted() {
+    bus.$on('showMsgBox', params => this.showMsgBox(params));
+  },
+  beforeDestroy() {
+    bus.$off('showMsgBox');
   },
 };
 </script>
