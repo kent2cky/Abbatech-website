@@ -3,14 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Hosting;
 using Abbatech.Models;
 
 namespace Abbatech.Data
 {
     public class DataContext : DbContext
     {
+        private IWebHostEnvironment _webHost;
+        public DataContext(IWebHostEnvironment webHost)
+        {
+            _webHost = webHost;
+        }
         protected override void OnConfiguring(DbContextOptionsBuilder options)
-            => options.UseSqlite("Data Source=abbatech.db");
+            => options.UseSqlite($"Data Source={_webHost.WebRootPath}/abbatech.db");
         public DbSet<Stock> Stocks { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<User> Users { get; set; }

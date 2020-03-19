@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 using System.Threading.Tasks;
 using Abbatech.Data;
 using Microsoft.AspNetCore.Hosting;
@@ -45,7 +46,13 @@ namespace Abbatech
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    webBuilder.UseKestrel();
+                    webBuilder.UseContentRoot(Directory.GetCurrentDirectory());
+                    webBuilder.UseIISIntegration();
                     webBuilder.UseStartup<Startup>();
+                    webBuilder.UseWebRoot("wwwroot");
+                    webBuilder.UseUrls("http://localhost:5001");
+                    // webBuilder.UseStartup<Startup>();
                 });
     }
 }

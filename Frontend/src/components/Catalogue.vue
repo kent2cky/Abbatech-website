@@ -8,11 +8,12 @@
           v-bind:key="stock.Id"
           v-bind:price="stock.price"
           v-bind:quantity="stock.quantity"
-          picture-url="https://res.cloudinary.com/kent2cky/image/upload/v1578776918/sample.jpg"
+          v-bind:picture-url="stock.pictureUrl"
           v-bind:name="stock.name"
           v-bind:description="stock.description"
           v-bind:isNegotiable="stock.isNegotiable"
         ></product-card>
+        <!-- picture-url="https://res.cloudinary.com/kent2cky/image/upload/v1578776918/sample.jpg" -->
       </div>
     </div>
     <button class="addStock" @click="showModal"></button>
@@ -54,7 +55,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .addStock {
   position: fixed;
   z-index: 599;
